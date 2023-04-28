@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_layout_generals",
+  "info": {
+    "displayName": "General"
+  },
+  "options": {},
+  "attributes": {
+    "Content": {
+      "type": "richtext"
+    }
+  }
+}
