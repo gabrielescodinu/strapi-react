@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+</head>
+
+<style>
+    #myDiv {
+        background-image: url('');
+    }
+    .cardContainer div {
+        box-shadow: dimgray 0px 0px 10px;
+    }
+</style>
+
+<body>
+    <div class="h-[500px] p-10 flex flex-col justify-center" id="myDiv">
+        <h1 class="text-white text-4xl font-bold" id="postTitle"></h1>
+        <p class="text-white text-2xl mt-5" id="postContent"></p>
+    </div>
+    <img id="postImage" alt="Immagine del post">
+
+    <div id="cardContainer" class="grid grid-cols-3"></div>
+
+
+    <script>
+        fetch('http://localhost:1337/api/posts/1?populate=Image,Card.CardImage')
+            .then(response => response.json())
+            .then(data => {
+                const postData = data.data.attributes;
+                const cardData = data.data.attributes.Card;
+
+                // Popolare il titolo e il contenuto del post
+                document.getElementById('postTitle').textContent = postData.Title;
+                document.getElementById('postContent').textContent = postData.Content;
+
+                // Impostare l'immagine del post e lo sfondo dell'header
+                const postImage = document.getElementById('postImage');
+                postImage.src = `http://localhost:1337${postData.Image.data.attributes.url}`;
+                const myDiv = document.getElementById('myDiv');
+                myDiv.style.backgroundImage = `url(http://localhost:1337${postData.Image.data.attributes.url})`;
+
+                // Popolare le card
+                const cardContainer = document.getElementById('cardContainer');
+                cardData.forEach(card => {
+                    const cardDiv = document.createElement('div');
+                    cardDiv.style.backgroundImage = `url(http://localhost:1337${card.CardImage.data.attributes.url})`;
+                    cardDiv.style.backgroundSize = 'cover';
+                    cardDiv.style.backgroundRepeat = 'no-repeat';
+                    cardDiv.style.backgroundPosition = 'center';
+                    const cardTitle = document.createElement('h2');
+                    cardTitle.textContent = card.Title;
+                    cardDiv.appendChild(cardTitle);
+                    cardContainer.appendChild(cardDiv);
+                });
+            })
+            .catch(error => console.error(error));
+    </script>
+</body>
+
+</html>
