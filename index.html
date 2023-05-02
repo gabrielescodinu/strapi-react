@@ -23,10 +23,10 @@
         <h1 class="text-white text-4xl font-bold" id="postTitle"></h1>
         <p class="text-white text-2xl mt-5" id="postContent"></p>
     </div>
+    
     <img id="postImage" alt="Immagine del post">
 
     <div id="cardContainer" class="grid grid-cols-3"></div>
-
 
     <script>
         fetch('http://localhost:1337/api/posts/1?populate=Image,Card.CardImage')
@@ -50,9 +50,6 @@
                 cardData.forEach(card => {
                     const cardDiv = document.createElement('div');
                     cardDiv.style.backgroundImage = `url(http://localhost:1337${card.CardImage.data.attributes.url})`;
-                    cardDiv.style.backgroundSize = 'cover';
-                    cardDiv.style.backgroundRepeat = 'no-repeat';
-                    cardDiv.style.backgroundPosition = 'center';
                     const cardTitle = document.createElement('h2');
                     cardTitle.textContent = card.Title;
                     cardDiv.appendChild(cardTitle);
